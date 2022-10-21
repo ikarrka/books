@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authors list{% endblock %}
+
+{% block body %}
+    <h2>Authors list</h2>
+    
+    <form>
+        <input name="searchfor" value="{{ searchfor }}" />
+        <button>Search</button>
+    </form>
+    <hr>
+<div id="authors">
+    <table>
+    {% for author in authors %}        
+        <tr>
+            <td>
+                {{author.name}}
+            </td>
+            <td>
+                <a href="{{ path('app_authorshow',{'id':author.id}) }}">Edit</a>
+            </td>
+            <td>
+                <a href="{{ path('app_authordelete',{'id':author.id}) }}">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <a href="{{ path("app_authorshow",{'id':0}) }}">Add author</a>
+</div>
+{% endblock %}
