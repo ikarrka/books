@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Services\AuthorService;
+use App\Services\BookService;
 
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -38,10 +39,14 @@ class MainController extends AbstractController
      */
     public function dummyadd(): Response
     {
-        AuthorService::addDummyAuthors($this->getDoctrine()->getManager());
+        //AuthorService::addDummyAuthors($this->getDoctrine()->getManager());
+        BookService::addDummyBooks($this->getDoctrine()->getManager());
         
         //TODO: redirect to main page after full dummy fuction will complited
         //return $this->redirectToRoute('app_main', [], 301);
-        return $this->redirectToRoute('app_author', [], 301);
+        
+        //return $this->redirectToRoute('app_author', [], 301);
+        
+        return $this->redirectToRoute('app_book', [], 301);
     }
 }

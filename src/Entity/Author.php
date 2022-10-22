@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AuthorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +29,16 @@ class Author
      */
     private $booksCount;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Book::class, inversedBy="authors")
+     */
+    private $books;
+
+    public function __construct()
+    {
+        $this->books = new ArrayCollection();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +64,30 @@ class Author
     public function setBooksCount(int $booksCount): self
     {
         $this->booksCount = $booksCount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Book>
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books[] = $book;
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        $this->books->removeElement($book);
 
         return $this;
     }

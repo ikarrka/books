@@ -2,32 +2,32 @@
 
 namespace App\Repository;
 
-use App\Entity\Author;
+use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Author>
+ * @extends ServiceEntityRepository<Book>
  *
- * @method Author|null find($id, $lockMode = null, $lockVersion = null)
- * @method Author|null findOneBy(array $criteria, array $orderBy = null)
- * @method Author[]    findAll()
- * @method Author[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Book|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Book|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Book[]    findAll()
+ * @method Book[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AuthorRepository extends ServiceEntityRepository
+class BookRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Author::class);
+        parent::__construct($registry, Book::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Author $entity, bool $flush = true): void
+    public function add(Book $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -39,7 +39,7 @@ class AuthorRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(Author $entity, bool $flush = true): void
+    public function save(Book $entity, bool $flush = true): void
     {
         //$this->_em->persist($entity);
         if ($flush) {
@@ -51,24 +51,26 @@ class AuthorRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Author $entity, bool $flush = true): void
+    public function remove(Book $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
             $this->_em->flush();
+            
+            //delete cover
         }
     }
 
     // /**
-    //  * @return Author[] Returns an array of Author objects
+    //  * @return Book[] Returns an array of Book objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
+            ->orderBy('b.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -77,10 +79,10 @@ class AuthorRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Author
+    public function findOneBySomeField($value): ?Book
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
@@ -88,14 +90,19 @@ class AuthorRepository extends ServiceEntityRepository
     }
     */
     
-    public function filterByName($value)
+    public function filterByFields($value)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.name like :val')
+                
+            ->orWhere('a.title like :val')
+            ->orWhere('a.description like :val')
+            ->orWhere('a.year like :val')
             ->setParameter('val', '%'.$value.'%')
             ->getQuery()
             ->getResult()
         ;
+        //->orWhere('a.id in ( select book_author.book_id from book_author left join author on author.id = book_author.author_id where author.name like :val )')
+
     }
-    
+
 }

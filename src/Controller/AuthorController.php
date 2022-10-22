@@ -6,11 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
 use Twig\Environment;
 
 use \App\Form\AuthorFormType;
-
 use \App\Entity\Author;
 
 class AuthorController extends AbstractController
@@ -18,15 +16,11 @@ class AuthorController extends AbstractController
     /**
      * @Route("/author", name="app_author")
      */
-    public function index(Request $request, EntityManagerInterface $entityManager): Response
+    public function index(Request $request): Response
     {
         $searchfor = $request->query->get('searchfor');
         if ($searchfor) {
-            $query = $entityManager->createQuery(
-                'SELECT p
-                FROM App:Author p
-                WHERE p.name like :searchfor')->setParameter('searchfor', '%'.$searchfor.'%');;    
-            $authors = $query->getResult();
+            $authors = $this->getDoctrine()->getRepository(Author::class)->filterByName($searchfor);
         }
         else {
             $authors = $this->getDoctrine()->getRepository(Author::class)->findAll();
@@ -42,7 +36,7 @@ class AuthorController extends AbstractController
     /**
      * @Route("/author/show/{id}", name="app_authorshow")
      */
-    public function showAuthor($id, Environment $twig, Request $request, EntityManagerInterface $entityManager): Response
+    public function showAuthor($id, Environment $twig, Request $request): Response
     {
         if ($id == 0) {
             $author = new Author();        
@@ -57,9 +51,11 @@ class AuthorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($id == 0) {
                 $author->setBooksCount(0);
-                $entityManager->persist($author);
+                $this->getDoctrine()->getRepository(Author::class)->add($author);
             }
-            $entityManager->flush();
+            else {
+                $this->getDoctrine()->getRepository(Author::class)->save($author);
+            }
             
             return $this->redirectToRoute('app_author', [], 301);
         }        
@@ -71,13 +67,12 @@ class AuthorController extends AbstractController
     /**
      * @Route("/author/delete/{id}", name="app_authordelete")
      */
-    public function deleteAuthor($id, EntityManagerInterface $entityManager): Response
+    public function deleteAuthor($id): Response
     {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
         
         if($author) {
-            $entityManager->remove($author);
-            $entityManager->flush();
+            $this->getDoctrine()->getRepository(Author::class)->remove($author);
         }
         
         return $this->redirectToRoute('app_author', [], 301);

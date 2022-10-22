@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+    <h2>Books list</h2>
+    <form>
+        <input name="searchfor" value="{{ searchfor }}" />
+        <button>Search</button> (you can search by part of any field)
+    </form>
+    <hr>
+<div id="books">
+            <form>
+                <input name="qay" style="Border: none; outline: none;" disabled="disabled" value="Title">
+                <input name="cdf"  style="Border: none; outline: none;" disabled="disabled" value="Description">
+                <input style="Border: none; outline: none;" disabled="disabled" value="Year">
+
+            </form>
+    {% for book in books %}        
+        <form method="post" action="{{ path("app_book") }}" style="margin-bottom:10px">
+            <input name="book_flag_inline" value="{{ book.id }}" hidden="hidden">
+            <input name="book_title_{{ book.id }}" value="{{ book.title }}" >
+            <input name="book_description_{{ book.id }}" value="{{ book.description }}" >
+            <input name="book_year_{{ book.id }}" value="{{ book.year }}" >
+            <button>Save inline</button>
+            {% if book.coverFilename != "" %}
+                <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" width="60" height="30">
+            {% else %}
+                <span style="min-width : 60px">No cover</span>
+            {% endif %}
+            <a href="{{ path('app_bookshow',{'id':book.id}) }}">Edit in new form</a>
+            <a href="{{ path('app_bookdelete',{'id':book.id}) }}">Delete</a>
+            {% if saveFromInline == book.id  %}
+                <span style="color:green">Saved. You may check if reload page or use search field</span>
+            {% endif %}
+            
+            <br>Author(s):&nbsp
+            {% set firstAuthor=0 %}
+            {% for author in book.authors %}
+                {% if firstAuthor == 1  %}
+                    ,
+                {% endif %}
+                {{ author.name }}
+                
+                {% set firstAuthor=1 %}
+            {% endfor %}
+            
+        </form>    
+                
+
+    {% endfor %}
+
+    <a href="{{ path("app_bookshow",{'id':0}) }}">Add book</a>         
+</div>
+        
+        
+        
+        
+        
+
+{% endblock %}

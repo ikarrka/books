@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BookController!{% endblock %}
+
+{% block body %}
+    <h2>Books list</h2>
+    <form>
+        <input name="searchfor" value="{{ searchfor }}" />
+        <button>Search</button> (you can search by part of any field)
+    </form>
+    <hr>
+<div id="books">
+   <table>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Cover
+            </th>
+        </tr>
+    {% for book in books %}        
+        <tr id="row_book_{{book.id}}">
+            <td>
+                {{book.title}}
+            </td>
+            <td>
+                {{book.description}}
+            </td>
+            <td>
+                {{book.year}}
+            </td>
+            <td>
+                <a href="{{ asset('uploads/covers/' ~ book.coverFilename) }}" target="_blank">View cover</a>
+            </td>
+            <td>
+                <a href="{{ path('app_bookshow',{'id':book.id}) }}">Edit</a>
+            </td>
+            <td>
+                <a href="{{ path('app_bookdelete',{'id':book.id}) }}">Delete</a>
+            </td>
+            <td>
+                <strong>!!!!!insert inline editor!!!!!!!!</strong>
+            </td>
+        </tr>
+        <tr id="edit_book_{{book.id}}" style="visibility: none">
+            <td>
+                <input name="book_title_{{book.id}}" id="book_title_{{book.id}}" value="{{book.title}}">
+            </td>
+            <td>
+                <input name="book_description_{{book.id}}" id="book_description_{{book.id}}" value="{{book.description}}">
+            </td>
+            <td>
+                <input name="book_year_{{book.id}}" id="book_year_{{book.id}}" value="{{book.year}}">
+            </td>
+            <td>
+                <button type="submit">Save</button>
+            </td>
+            <td>
+                <button>Close</button>
+            </td>
+        </tr>
+    {% endfor %}
+   </table>
+    <a href="{{ path("app_bookshow",{'id':0}) }}">Add book</a>         
+</div>
+        
+        
+        
+        
+        
+
+{% endblock %}
