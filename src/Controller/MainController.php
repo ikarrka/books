@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Services\AuthorService;
+
+use Doctrine\ORM\EntityManagerInterface;
+
+
 class MainController extends AbstractController
 {
     /**
@@ -16,5 +21,27 @@ class MainController extends AbstractController
         return $this->render('main/index.html.twig', [
             'controller_name' => 'MainController',
         ]);
+    }
+    
+    /**
+     * @Route("/dummy", name="app_dummy")
+     */
+    public function dummy(): Response
+    {
+        return $this->render('main/dummy.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
+    }
+    
+    /**
+     * @Route("/dummyadd", name="app_dummyadd")
+     */
+    public function dummyadd(): Response
+    {
+        AuthorService::addDummyAuthors($this->getDoctrine()->getManager());
+        
+        //TODO: redirect to main page after full dummy fuction will complited
+        //return $this->redirectToRoute('app_main', [], 301);
+        return $this->redirectToRoute('app_author', [], 301);
     }
 }
