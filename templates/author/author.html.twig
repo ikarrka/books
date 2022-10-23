@@ -16,11 +16,17 @@
             <th>
                 Name
             </th>
+            <th>
+                Books count
+            </th>
         </tr>
     {% for author in authors %}        
         <tr>
             <td>
                 {{author.name}}
+            </td>
+            <td>
+                {{author.booksCount}}
             </td>
             <td>
                 <a href="{{ path('app_authorshow',{'id':author.id}) }}">Edit</a>

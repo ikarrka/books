@@ -32,3 +32,4 @@ services:
     App\Services\FileUploader:
         arguments:
             $targetDirectory: '%cover_directory%'
+            

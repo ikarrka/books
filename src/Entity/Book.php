@@ -6,9 +6,11 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use ORM\Mapping\HasLifecycleCallbacks;
+use \Doctrine\Persistence\Event\LifecycleEventArgs;
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
+ * @ORM\HasLifecycleCallbacks() 
  */
 class Book
 {
@@ -126,4 +128,5 @@ class Book
         return $this;
     }    
     
+
 }

@@ -93,7 +93,6 @@ class BookRepository extends ServiceEntityRepository
     public function filterByFields($value)
     {
         return $this->createQueryBuilder('a')
-                
             ->orWhere('a.title like :val')
             ->orWhere('a.description like :val')
             ->orWhere('a.year like :val')
@@ -101,8 +100,21 @@ class BookRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-        //->orWhere('a.id in ( select book_author.book_id from book_author left join author on author.id = book_author.author_id where author.name like :val )')
-
+    }
+    
+    public function getAuthorBooksCount()
+    {
+        return $this->createQueryBuilder('a')
+                ->select('count(*)')
+                ->select('ba.author_id')
+                ->leftJoin("book_author", "ba", "ba.book_id=a.id")
+                ->addGroupBy("book_author.author_id")
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
+    
+    
+    
 }
