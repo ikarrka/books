@@ -16,7 +16,7 @@ use App\Entity\Author;
 
 class BookService /*extends AbstractController*/{
     
-    public function addDummyBooks($entityManager) {
+    public static function addDummyBooks($entityManager) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://randomus.ru/name?type=101&sex=10&count=5");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
