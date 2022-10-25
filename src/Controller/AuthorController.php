@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use \Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
 
 use \App\Form\AuthorFormType;
 use \App\Entity\Author;
@@ -36,7 +35,7 @@ class AuthorController extends AbstractController
     /**
      * @Route("/author/show/{id}", name="app_authorshow")
      */
-    public function showAuthor($id, Environment $twig, Request $request): Response
+    public function showAuthor($id, Request $request): Response
     {
         if ($id == 0) {
             $author = new Author();        
@@ -59,9 +58,10 @@ class AuthorController extends AbstractController
             
             return $this->redirectToRoute('app_author', [], 301);
         }        
-        return new Response($twig->render("author/show.html.twig", [
+        return $this->render('author/show.html.twig', [
             "author_form" => $form->createView()
-        ]));
+         ]);
+
     }
 
     /**
@@ -70,9 +70,15 @@ class AuthorController extends AbstractController
     public function deleteAuthor($id): Response
     {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
-        
         if($author) {
-            $this->getDoctrine()->getRepository(Author::class)->remove($author);
+            try {
+                $this->getDoctrine()->getRepository(Author::class)->remove($author);
+                
+            } catch (Exception $ex) {
+                return $this->render('main/error.html.twig', [
+                    "exception" => $ex
+                ]);
+            }
         }
         
         return $this->redirectToRoute('app_author', [], 301);

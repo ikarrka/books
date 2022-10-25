@@ -29,14 +29,11 @@ class BookFormType extends AbstractType
                 'class' => Author::class,
                 'query_builder' => function(EntityRepository $er) use ($options) {
                     $query = $er->createQueryBuilder('r');
-//                    if ($options['status']>0) {
-//                        $query->where($query)
-//                    }
                     return $query;
                 },
                 'choice_label' => 'name',
                 'placeholder' => 'Select',
-                        'attr' => ['style' => 'width:400px;height:100px'],
+                'attr' => ['style' => 'width:400px;height:100px'],
                 'multiple' => true,
 //                        'mapped' => false,
                 'constraints' => array(

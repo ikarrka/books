@@ -10,7 +10,6 @@ namespace App\Services;
  * @author Igor
  */
 
-//use \App\Entity\Author;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

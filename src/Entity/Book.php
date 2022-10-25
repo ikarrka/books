@@ -6,11 +6,9 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ORM\Mapping\HasLifecycleCallbacks;
-use \Doctrine\Persistence\Event\LifecycleEventArgs;
+
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
- * @ORM\HasLifecycleCallbacks() 
  */
 class Book
 {
@@ -50,7 +48,7 @@ class Book
     {
         $this->authors = new ArrayCollection();
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,12 +90,12 @@ class Book
         return $this;
     }
 
-    public function getCoverFilename()
+    public function getCoverFilename(): ?string
     {
         return $this->coverFilename;
     }
 
-    public function setCoverFilename($coverFilename)
+    public function setCoverFilename(?string $coverFilename): self
     {
         $this->coverFilename = $coverFilename;
 
@@ -126,7 +124,5 @@ class Book
         $this->authors->removeElement($author);
 
         return $this;
-    }    
-    
-
+    }
 }

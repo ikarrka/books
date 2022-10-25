@@ -30,7 +30,7 @@ class Author
     private $booksCount;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Book::class, inversedBy="authors")
+     * @ORM\ManyToMany(targetEntity=Book::class, mappedBy="authors")
      */
     private $books;
 
@@ -38,7 +38,7 @@ class Author
     {
         $this->books = new ArrayCollection();
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -80,6 +80,7 @@ class Author
     {
         if (!$this->books->contains($book)) {
             $this->books[] = $book;
+            $book->addAuthor($this);
         }
 
         return $this;
@@ -87,9 +88,10 @@ class Author
 
     public function removeBook(Book $book): self
     {
-        $this->books->removeElement($book);
+        if ($this->books->removeElement($book)) {
+            $book->removeAuthor($this);
+        }
 
         return $this;
     }
-
 }

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Books list{% endblock %}
+{% set pTitle = "Books list" %}
+{% block title %}{{ pTitle }}{% endblock %}
 
 {% block body %}
-    <h2>Books list</h2>
+    <h2>{{ pTitle }}</h2>
     <form>
         <input name="searchfor" value="{{ searchfor }}" />
         <button>Search</button> (you can search by part of any field)
@@ -11,20 +11,20 @@
     <hr>
 <div id="books">
             <form>
-                <input name="qay" style="Border: none; outline: none;" disabled="disabled" value="Title">
-                <input name="cdf"  style="Border: none; outline: none;" disabled="disabled" value="Description">
-                <input style="Border: none; outline: none;" disabled="disabled" value="Year">
+                <input name="qay" style="Border: none; outline: none;font-weight: bold" disabled="disabled" value="Title">
+                <input name="cdf"  style="Border: none; outline: none;width: 24em;font-weight: bold;" disabled="disabled" value="Description">
+                <input style="Border: none; outline: none;font-weight: bold" disabled="disabled" value="Year">
 
             </form>
     {% for book in books %}        
         <form method="post" action="{{ path("app_book") }}" style="margin-bottom:10px">
             <input name="book_flag_inline" value="{{ book.id }}" hidden="hidden">
             <input name="book_title_{{ book.id }}" value="{{ book.title }}" >
-            <input name="book_description_{{ book.id }}" value="{{ book.description }}" >
+            <input name="book_description_{{ book.id }}" value="{{ book.description }}" style="width: 25em" >
             <input name="book_year_{{ book.id }}" value="{{ book.year }}" >
-            <button>Save inline</button>
+            <button>Inline save </button>
             {% if book.coverFilename != "" %}
-                <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" width="60" height="30">
+                <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" width="60" height="30" alt="cover's gone">
             {% else %}
                 <span style="min-width : 60px">No cover</span>
             {% endif %}

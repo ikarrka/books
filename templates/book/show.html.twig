@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Book{% endblock %}
-
+{% set pTitle = "Book" %}
+{% block title %}{{ pTitle }}{% endblock %}
+{% block stylesheets %}
+    <style>* {width:400px}</style>
+{% endblock %}
 {% block body %}
-    <h2>Book</h2>
+    <h2>{{ pTitle }}</h2>
     {{ form(book_form) }} 
 
 {% endblock %}

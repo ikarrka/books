@@ -41,7 +41,6 @@ class BookRepository extends ServiceEntityRepository
      */
     public function save(Book $entity, bool $flush = true): void
     {
-        //$this->_em->persist($entity);
         if ($flush) {
             $this->_em->flush();
         }
@@ -53,11 +52,13 @@ class BookRepository extends ServiceEntityRepository
      */
     public function remove(Book $entity, bool $flush = true): void
     {
-        $this->_em->remove($entity);
-        if ($flush) {
-            $this->_em->flush();
-            
-            //delete cover
+        try {
+            $this->_em->remove($entity);
+            if ($flush) {
+                $this->_em->flush();
+            }
+        } catch (Exception $ex) {
+            var_dump($ex);die();
         }
     }
 
@@ -101,20 +102,5 @@ class BookRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    
-    public function getAuthorBooksCount()
-    {
-        return $this->createQueryBuilder('a')
-                ->select('count(*)')
-                ->select('ba.author_id')
-                ->leftJoin("book_author", "ba", "ba.book_id=a.id")
-                ->addGroupBy("book_author.author_id")
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    
-    
     
 }

@@ -39,18 +39,6 @@ class AuthorRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(Author $entity, bool $flush = true): void
-    {
-        //$this->_em->persist($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
-    }
-
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function remove(Author $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
@@ -96,6 +84,15 @@ class AuthorRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+    
+    public function updateBooksCount() {
+        $this->_em->flush();
+        $authors = $this->findAll();
+        foreach($authors as $author) {
+            $author->setBooksCount($author->getBooks()->count());
+            $this->_em->flush();
+        }
     }
     
 }

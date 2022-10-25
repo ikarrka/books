@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Author{% endblock %}
+{% set pTitle = "Author" %}
+{% block title %}{{ pTitle }}{% endblock %}
 
 {% block body %}
-    <h2>Author</h2>
+    <h2>{{ pTitle }}</h2>
     {{ form(author_form) }}
 {% endblock %}

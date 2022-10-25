@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Authors list{% endblock %}
+{% set pTitle = "Authors list" %}
+{% block title %}{{ pTitle }}{% endblock %}
 
 {% block body %}
-    <h2>Authors list</h2>
+    <h2>{{ pTitle }}</h2>
     
     <form>
         <input name="searchfor" value="{{ searchfor }}" />
@@ -17,7 +17,10 @@
                 Name
             </th>
             <th>
-                Books count
+                Books count (calculated from entity)
+            </th>
+            <th style="text-align: left;">
+                Books count (updated from listener)
             </th>
         </tr>
     {% for author in authors %}        
@@ -25,7 +28,20 @@
             <td>
                 {{author.name}}
             </td>
-            <td>
+            <td style="text-align: center">
+                {{author.books.count()}}
+{#                |
+                {% set firstBook=0 %}
+                {% for book in author.books %}
+                    {% if firstBook == 1  %}
+                        ,
+                    {% endif %}
+                    {{ book.title }}
+
+                    {% set firstBook=1 %}
+                {% endfor %}#}
+            </td>
+            <td style="text-align: center">
                 {{author.booksCount}}
             </td>
             <td>

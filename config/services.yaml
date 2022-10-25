@@ -32,4 +32,28 @@ services:
     App\Services\FileUploader:
         arguments:
             $targetDirectory: '%cover_directory%'
+ 
+#    App\EventListener\BookListener:
+#        tags:
+#            - {name: doctrine.event_listener, event: postUpdate}
+
+    App\EventListener\BookListener:
+        tags:
+            - 
+                name: 'doctrine.orm.entity_listener'
+                entity: 'App\Entity\Book'
+                event: 'postUpdate'
+
+            - 
+                name: 'doctrine.orm.entity_listener'
+                entity: 'App\Entity\Book'
+                event: 'postPersist'                
+               
+            - 
+                name: 'doctrine.orm.entity_listener'
+                entity: 'App\Entity\Book'
+                event: 'postRemove'                
+               
+         
             
+     
