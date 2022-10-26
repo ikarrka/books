@@ -80,11 +80,23 @@ class AuthorRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.name like :val')
+                ->andWhere->expr()->like('a.name', ':val')
+                
             ->setParameter('val', '%'.$value.'%')
             ->getQuery()
             ->getResult()
         ;
     }
+    
+//    public function filterByName($value)
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.name like :val')
+//            ->setParameter('val', '%'.$value.'%')
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
     
     public function updateBooksCount() {
         $this->_em->flush();

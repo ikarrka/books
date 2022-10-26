@@ -6,6 +6,7 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)
@@ -125,4 +126,46 @@ class Book
 
         return $this;
     }
+
+
+
+    const SERVER_PATH_TO_IMAGE_FOLDER = '/public/cover';
+    /**
+     * Unmapped property to handle file uploads
+     */
+    private ?UploadedFile $file = null;
+
+    public function setFile(?UploadedFile $file = null): void
+    {
+        $this->file = $file;
+    }
+
+    public function getFile(): ?UploadedFile
+    {
+        return $this->file;
+    }
+
+    /**
+     * Manages the copying of the file to the relevant place on the server
+     */
+    public function upload(): void
+    {
+        if ($this->getFile()) {
+            $this->getFile()->move(
+                self::SERVER_PATH_TO_IMAGE_FOLDER,
+                $this->getFile()->getClientOriginalName()
+            );
+            $this->coverFilename = $this->getFile()->getClientOriginalName();
+            $this->setFile(null);
+        }
+    }
+
+    /**
+     * Lifecycle callback to upload the file to the server.
+     */
+    public function lifecycleFileUpload(): void
+    {
+        $this->upload();
+    }
+
 }

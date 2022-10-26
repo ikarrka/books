@@ -1,7 +1,4 @@
 <?php
-
-
-
 namespace App\Services;
 
 /**
@@ -12,8 +9,6 @@ namespace App\Services;
 
 use App\Entity\Book;
 use App\Entity\Author;
-use App\Repository\BookRepository;
-
 
 class BookService /*extends AbstractController*/{
 

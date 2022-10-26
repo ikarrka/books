@@ -30,7 +30,7 @@ class FileUploader {
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException $e) {
-            throw 'something happens during file upload';
+            echo $e->getMessage();
         }
 
         return $fileName;
