@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Home page</h1>
-    <br><br>       SQL запрос: Получить список книг, которые написаны более 2-мя со-авторами<h2>
+    <br><br>       SQL : Get books list, created by 2 and more co-authors<h2>
     <textarea style="width: 530px;height: 120px;">
         SELECT book.title, count(book_author.book_id) as cnt 
             FROM book_author
