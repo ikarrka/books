@@ -27,7 +27,7 @@ class Author
     /**
      * @ORM\Column(type="integer")
      */
-    private $booksCount;
+    private $booksCount = 0;
 
     /**
      * @ORM\ManyToMany(targetEntity=Book::class, mappedBy="authors")
