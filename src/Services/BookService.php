@@ -65,7 +65,7 @@ class BookService /*extends AbstractController*/{
             
         }
         if (!$flagSuccess) {
-            throw "Something went wrong";
+            throw new Exception("Something went wrong");
         }
         return;
         

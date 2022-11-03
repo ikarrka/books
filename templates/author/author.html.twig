@@ -45,7 +45,7 @@
                 {{author.booksCount}}
             </td>
             <td>
-                <a href="{{ path('app_authorshow',{'id':author.id}) }}">Edit</a>
+                <a href="{{ path('app_authoredit',{'id':author.id}) }}">Edit</a>
             </td>
             <td>
                 <a href="{{ path('app_authordelete',{'id':author.id}) }}">Delete</a>
@@ -53,6 +53,6 @@
         </tr>
     {% endfor %}
     </table>
-    <a href="{{ path("app_authorshow",{'id':0}) }}">Add author</a>
+    <a href="{{ path("app_authorcreate") }}">Add author</a>
 </div>
 {% endblock %}

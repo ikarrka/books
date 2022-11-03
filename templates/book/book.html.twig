@@ -28,7 +28,7 @@
             {% else %}
                 <span style="min-width : 60px">No cover</span>
             {% endif %}
-            <a href="{{ path('app_bookshow',{'id':book.id}) }}">Edit in new form</a>
+            <a href="{{ path('app_bookedit',{'id':book.id}) }}">Edit in new form</a>
             <a href="{{ path('app_bookdelete',{'id':book.id}) }}">Delete</a>
             {% if saveFromInline == book.id  %}
                 <span style="color:green">Saved. You may check if reload page or use search field</span>
@@ -50,7 +50,7 @@
 
     {% endfor %}
 
-    <a href="{{ path("app_bookshow",{'id':0}) }}">Add book</a>         
+    <a href="{{ path("app_bookcreate") }}">Add book</a>
 </div>
         
         
