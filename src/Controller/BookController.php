@@ -15,25 +15,11 @@ use App\Entity\Book;
 class BookController extends AbstractController
 {
 
-
     /**
      * @Route("/book", name="app_book")
      */
     public function index(Request $request): Response
     {
-
-        //check if we've got data from inline save
-        $saveFromInline = $request->request->get('book_flag_inline');
-        if ($saveFromInline) {
-            $book = $this->getDoctrine()->getRepository(Book::class)->find($saveFromInline);
-            $book->setTitle($request->request->get("book_title_" . $saveFromInline));
-            $book->setDescription($request->request->get("book_description_" . $saveFromInline));
-            $book->setYear($request->request->get("book_year_" . $saveFromInline));
-            //$this->getDoctrine()->getRepository(Book::class)->save($book);
-
-
-            $this->getDoctrine()->getManager()->flush();
-        }
 
         $searchfor = $request->query->get('searchfor');
 
@@ -47,7 +33,6 @@ class BookController extends AbstractController
             'controller_name' => 'BookController',
             'books' => $books,
             'searchfor' => $searchfor,
-            'saveFromInline' => $saveFromInline,
         ]);
     }
 
@@ -103,18 +88,6 @@ class BookController extends AbstractController
 
     }
 
-    private function uploadAndGetCoverFileName($coverFile) : String
-    {
-        if ($coverFile) {
-            $fileUploader = new FileUploader($this->getParameter('cover_directory'));
-            $coverFileName = $fileUploader->upload($coverFile);
-            return $coverFileName;
-        }
-
-        return "";
-    }
-
-
     /**
      * @Route("/book/delete/{id}", name="app_bookdelete")
      */
@@ -139,6 +112,18 @@ class BookController extends AbstractController
             }
         }
         return $this->redirectToRoute('app_book', [], 301);
+    }
+
+
+    private function uploadAndGetCoverFileName($coverFile) : String
+    {
+        if ($coverFile) {
+            $fileUploader = new FileUploader($this->getParameter('cover_directory'));
+            $coverFileName = $fileUploader->upload($coverFile);
+            return $coverFileName;
+        }
+
+        return "";
     }
 
 }

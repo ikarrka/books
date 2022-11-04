@@ -54,7 +54,7 @@ class BookRepository extends ServiceEntityRepository {
                 $this->_em->flush();
             }
         } catch (Exception $ex) {
-            var_dump($ex);
+            throw new Exception("Something went wrong");
         }
     }
 

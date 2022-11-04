@@ -2,60 +2,80 @@
 {% set pTitle = "Books list" %}
 {% block title %}{{ pTitle }}{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        input:read-only {
+            border: solid 2px white;
+            background: lightgray;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/js/books.js"></script>
+{% endblock %}
+
+
 {% block body %}
     <h2>{{ pTitle }}</h2>
     <form>
-        <input name="searchfor" value="{{ searchfor }}" />
-        <button>Search</button> (you can search by part of any field)
+        <input name="searchfor" value="{{ searchfor }}"/>
+        <button>Search</button>
+        (you can search by part of any field)
     </form>
     <hr>
-<div id="books">
-            <form>
-                <input name="qay" style="Border: none; outline: none;font-weight: bold" disabled="disabled" value="Title">
-                <input name="cdf"  style="Border: none; outline: none;width: 24em;font-weight: bold;" disabled="disabled" value="Description">
-                <input style="Border: none; outline: none;font-weight: bold" disabled="disabled" value="Year">
+    <div id="books">
+        <form>
+            <input style="text-align: center" disabled="disabled" value="Title">
+            <input style="width: 25em;text-align: center" disabled="disabled"
+                   value="Description">
+            <input style="text-align: center" disabled="disabled" value="Year">
 
-            </form>
-    {% for book in books %}        
-        <form method="post" action="{{ path("app_book") }}" style="margin-bottom:10px">
-            <input name="book_flag_inline" value="{{ book.id }}" hidden="hidden">
-            <input name="book_title_{{ book.id }}" value="{{ book.title }}" >
-            <input name="book_description_{{ book.id }}" value="{{ book.description }}" style="width: 25em" >
-            <input name="book_year_{{ book.id }}" value="{{ book.year }}" >
-            <button>Inline save </button>
-            {% if book.coverFilename != "" %}
-                <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" width="60" height="30" alt="cover's gone">
-            {% else %}
-                <span style="min-width : 60px">No cover</span>
-            {% endif %}
-            <a href="{{ path('app_bookedit',{'id':book.id}) }}">Edit in new form</a>
-            <a href="{{ path('app_bookdelete',{'id':book.id}) }}">Delete</a>
-            {% if saveFromInline == book.id  %}
-                <span style="color:green">Saved. You may check if reload page or use search field</span>
-            {% endif %}
-            
-            <br>Author(s):&nbsp
-            {% set firstAuthor=0 %}
-            {% for author in book.authors %}
-                {% if firstAuthor == 1  %}
-                    ,
+        </form>
+        {% for book in books %}
+            <form id="formForInline_{{ book.id }}">
+                <input name="title" value="{{ book.title }}" readonly oldvalue="">
+                <input name="description" value="{{ book.description }}" style="width: 25em"
+                       readonly oldvalue="">
+                <input name="year" value="{{ book.year }}" readonly oldvalue="">
+
+                <button type="button" bookid="{{ book.id }}" class="book_edit">Edit inline
+                </button>
+                <button type="button" bookid="{{ book.id }}" class="book_save" hidden>
+                    Save
+                </button>
+                <button type="button" bookid="{{ book.id }}" class="book_delete">
+                    Delete
+                </button>
+
+                {% if book.coverFilename != "" %}
+                    <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" width="60" height="30"
+                         alt="cover's gone">
+                {% else %}
+                    <span style="min-width : 60px">No cover</span>
                 {% endif %}
-                {{ author.name }}
-                
-                {% set firstAuthor=1 %}
-            {% endfor %}
-            
-        </form>    
-                
+                <a href="{{ path('app_bookedit',{'id':book.id}) }}">Edit in new form</a>
 
-    {% endfor %}
+                <br>Author(s):&nbsp
+                {% set firstAuthor=0 %}
+                {% for author in book.authors %}
+                    {% if firstAuthor == 1 %}
+                        ,
+                    {% endif %}
+                    {{ author.name }}
 
-    <a href="{{ path("app_bookcreate") }}">Add book</a>
-</div>
-        
-        
-        
-        
-        
+                    {% set firstAuthor=1 %}
+                {% endfor %}
+            </form>
+        {% endfor %}
+
+        <hr><a href="{{ path("app_bookcreate") }}">Add book</a>
+    </div>
+
+
+
+
+
 
 {% endblock %}
