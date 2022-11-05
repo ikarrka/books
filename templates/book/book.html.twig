@@ -8,6 +8,18 @@
             border: solid 2px white;
             background: lightgray;
         }
+
+        .centered {
+            position: fixed; /* or absolute */
+            top: 50%;
+            left: 25%;
+            width: 10em;
+            height: 3em;
+            margin: -50px 0 0 -100px;
+            background: #f0f0f0;
+            text-align: center;
+            line-height: 3em;
+        }
     </style>
 {% endblock %}
 
@@ -39,16 +51,16 @@
                 <input name="description" value="{{ book.description }}" style="width: 25em"
                        readonly oldvalue="">
                 <input name="year" value="{{ book.year }}" readonly oldvalue="">
-
-                <button type="button" bookid="{{ book.id }}" class="book_edit">Edit inline
-                </button>
-                <button type="button" bookid="{{ book.id }}" class="book_save" hidden>
-                    Save
-                </button>
-                <button type="button" bookid="{{ book.id }}" class="book_delete">
-                    Delete
-                </button>
-
+                <span style="display:inline-block;width:170px;margin: 0px">
+                    <button type="button" bookId="{{ book.id }}" class="book_save" hidden>
+                        Save
+                    </button>
+                    <button type="button" bookId="{{ book.id }}" class="book_edit">Edit inline
+                    </button>
+                    <button type="button" bookId="{{ book.id }}" class="book_delete">
+                        Delete
+                    </button>
+                </span>
                 {% if book.coverFilename != "" %}
                     <img src="{{ asset('uploads/covers/' ~ book.coverFilename) }}" width="60" height="30"
                          alt="cover's gone">
@@ -70,9 +82,10 @@
             </form>
         {% endfor %}
 
-        <hr><a href="{{ path("app_bookcreate") }}">Add book</a>
+        <hr>
+        <a href="{{ path("app_bookcreate") }}">Add book</a>
     </div>
-
+<div class="centered" hidden>Wait...</div>
 
 
 
