@@ -109,7 +109,6 @@ class AuthorRepository extends ServiceEntityRepository
 //    }
     
     public function updateBooksCount() {
-        $this->_em->flush();
         $authors = $this->findAll();
         foreach($authors as $author) {
             $author->setBooksCount($author->getBooks()->count());
