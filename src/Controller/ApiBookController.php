@@ -4,7 +4,6 @@
 namespace App\Controller;
 
 
-
 use App\Entity\Book;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,15 +26,14 @@ class ApiBookController extends AbstractController
         $parameters = json_decode($request->getContent(), true);
 
         $book = $this->getDoctrine()->getRepository(Book::class)->find($id);
-
+        $date = new \DateTime();
+        $moment = $date->format('Y-m-d H:i:s');
         $book
             ->setTitle($parameters["title"])
             ->setDescription($parameters["description"])
             ->setYear($parameters["year"]);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($book);
-        $em->flush();
+        $this->getDoctrine()->getRepository(Book::class)->save($book);
 
         return $this->json("Updated successfull");
     }

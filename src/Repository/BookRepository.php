@@ -51,10 +51,6 @@ class BookRepository extends ServiceEntityRepository
     {
         $this->updateAuthorsCollection($entity);
 
-        foreach ($entity->getAuthors() as $author) {
-            $entity->addAuthor($author);
-        }
-
         if ($flush) {
             $this->_em->flush();
 
@@ -68,7 +64,9 @@ class BookRepository extends ServiceEntityRepository
     public function remove(Book $entity, bool $flush = true): void
     {
         try {
-            $this->updateAuthorsCollection($entity);
+            foreach ($entity->getAuthors() as $author) {
+                $entity->removeAuthor($author);
+            }
             
             $this->_em->remove($entity);
             if ($flush) {

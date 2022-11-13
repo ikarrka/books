@@ -43,11 +43,6 @@ services:
                 name: 'doctrine.orm.entity_listener'
                 entity: 'App\Entity\Book'
                 event: 'postUpdate'
-
-            - 
-                name: 'doctrine.orm.entity_listener'
-                entity: 'App\Entity\Book'
-                event: 'postPersist'                
                
             - 
                 name: 'doctrine.orm.entity_listener'
