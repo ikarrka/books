@@ -15,7 +15,10 @@ use App\Repository\AuthorRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class BookListener {
-    
+    /**
+     * some comment
+     */
+
     private $em;
 
     public function __construct(ManagerRegistry $em)
